@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "basic:test": "ts-node sample.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,5 +13,9 @@
     "dotenv": "^16.4.5",
     "ftp": "^0.3.10",
     "js-sha256": "^0.11.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
   }
 }
