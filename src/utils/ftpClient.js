@@ -1,11 +1,21 @@
 const FTP = require('ftp');
 const { ftpHost, ftpUser, ftpPassword } = require('../config');
 
+/**
+ * Class representing an FTP client.
+ */
 class FtpClient {
+  /**
+   * Creates an instance of the FTP client.
+   */
   constructor() {
     this.ftp = new FTP();
   }
 
+  /**
+   * Connects to the FTP server using the configuration from the environment variables.
+   * @returns {Promise<void>} A promise that resolves when the connection is successfully established.
+   */
   connect() {
     return new Promise((resolve, reject) => {
       this.ftp.on('ready', resolve);
@@ -19,6 +29,12 @@ class FtpClient {
     });
   }
 
+  /**
+   * Uploads a file to the FTP server.
+   * @param {string} filePath - The local path of the file to upload.
+   * @param {string} destination - The destination path on the FTP server.
+   * @returns {Promise<void>} A promise that resolves when the file is successfully uploaded.
+   */
   upload(filePath, destination) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -40,6 +56,9 @@ class FtpClient {
     });
   }
 
+  /**
+   * Closes the connection to the FTP server.
+   */
   disconnect() {
     this.ftp.end();
     console.log('FTP connection closed');
