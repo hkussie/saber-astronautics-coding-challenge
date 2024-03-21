@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "upload": "node src/index.js",
     "basic:test": "node sample.js"
   },
   "keywords": [],
