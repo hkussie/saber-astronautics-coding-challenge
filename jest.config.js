@@ -1,9 +1,5 @@
 module.exports = {
-    preset: 'ts-jest',
     testEnvironment: 'node',
     roots: ['<rootDir>/tests'],
-    testMatch: ['**/*.test.ts'], // Only run files that end with .test.ts
-    transform: {
-      '^.+\\.ts$': 'ts-jest',
-    },
+    testMatch: ['**/*.test.js'], // Only run files that end with .test.js
 };
