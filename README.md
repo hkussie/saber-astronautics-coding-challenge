@@ -20,7 +20,8 @@ A step-by-step series of examples that tell you how to get a development environ
 1. Clone the repository:
 
     ```bash 
-    git clone https://github.com/hkussie saber-astronautics-coding-challenge.git```
+    git clone https://github.com/hkussie saber-astronautics-coding-challenge.
+    ```
 
 2. Install dependencies:
 
@@ -45,6 +46,6 @@ This script will ensure the FTP server is running and then execute the `index.js
 
 To stop and remove the FTP server container:
 
- ```bash 
+```bash
 docker-compose down
 ```
