@@ -35,4 +35,21 @@ describe('uploadDataAndHash', () => {
     expect(fs.writeFileSync).toHaveBeenCalledWith(expect.any(String), JSON.stringify(sampleData));
     expect(fs.writeFileSync).toHaveBeenCalledWith(expect.any(String), expect.any(String));
   });
+
+  it('should handle errors during data preparation', async () => {
+    const invalidData = {
+      invalidField: "This data is invalid and should cause an error"
+    };
+    try {
+      await uploadDataAndHash(invalidData);
+      expect(true).toBe(false);
+    } catch (error) {
+      expect(error).toBeDefined();
+    }
+  });
+
+  it('should write data to a temporary file', async () => {
+    await uploadDataAndHash(sampleData);
+    expect(fs.writeFileSync).toHaveBeenCalledWith(expect.any(String), JSON.stringify(sampleData));
+  });
 });
