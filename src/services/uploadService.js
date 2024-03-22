@@ -2,17 +2,16 @@ const fs = require('fs');
 const { generateFileName, generateHashFileName } = require('../utils/generateFileNames');
 const hashData = require('../utils/hashData');
 const FtpClient = require('../utils/ftpClient');
-const sampleData = require('../data/sampleData');
 
 /**
  * Prepares and uploads data and its hash to the FTP server.
  * @async
+ * @param {Object} inputData - The data to be processed and uploaded.
  * @returns {Promise<void>}
  */
-
-async function uploadDataAndHash() {
-  // Convert the sample data to JSON and generate filenames
-  const jsonData = JSON.stringify(sampleData);
+async function uploadDataAndHash(inputData) {
+  // Convert the input data to JSON and generate filenames
+  const jsonData = JSON.stringify(inputData);
   const jsonFileName = generateFileName();
   const hashFileName = generateHashFileName(jsonFileName);
   
