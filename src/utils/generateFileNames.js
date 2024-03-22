@@ -15,7 +15,12 @@ function generateFileName() {
  * @returns {string} The generated hash filename in the format 'YYYYMMDDHHmmss-obs.sha256'.
  */
 function generateHashFileName(jsonFileName) {
-  return jsonFileName.replace('.json', '.sha256');
+  // return jsonFileName.replace('.json', '.sha256');
+  if (jsonFileName.endsWith('.json')) {
+    return jsonFileName.replace('.json', '.sha256');
+  } else {
+    return `${jsonFileName}.sha256`
+  }
 }
 
 module.exports = { generateFileName, generateHashFileName };

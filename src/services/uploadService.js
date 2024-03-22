@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { generateFileName, generateHashFileName } = require('../utils/generateFileName');
+const { generateFileName, generateHashFileName } = require('../utils/generateFileNames');
 const hashData = require('../utils/hashData');
 const FtpClient = require('../utils/ftpClient');
 const sampleData = require('../data/sampleData');
