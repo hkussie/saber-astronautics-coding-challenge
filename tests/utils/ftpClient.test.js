@@ -20,7 +20,7 @@ describe('FTPClient disconnect functionality', () => {
     });
 
     it('should correctly instantiate the mock FTP client', () => {
-        const client = new FTPClient(); // Temporarily log to verify instantiation
+        const client = new FTPClient();
         
         expect(client.connect).toBeDefined();
         expect(client.upload).toBeDefined(); 
