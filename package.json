@@ -6,8 +6,7 @@
   "scripts": {
     "test": "jest",
     "upload": "node src/index.js",
-    "start-ftp": "docker-compose up -d",
-    "start-ftp-and-upload": "docker-compose up -d && sleep 10 && node src/index.js"
+    "start-ftp": "docker-compose up -d"
   },
   "keywords": [],
   "author": "",

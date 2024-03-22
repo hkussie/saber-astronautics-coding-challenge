@@ -1,6 +1,6 @@
-# Saber Code Task
+# FTP Server Upload Coding Task
 
-This project leverages Docker and NodeJS to upload files to an FTP server locally.
+This project leverages Docker, NodeJS and JavaScript to upload json files and their corresponding hashed files to an FTP server locally.
 
 ## Getting Started
 
@@ -8,14 +8,15 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them:
+You'll need the following installed:
 
 - [Node.js](https://nodejs.org/) - The runtime server environment
 - [Docker](https://www.docker.com/) - Container platform used to run the FTP server
 
+
 ### Installing
 
-A step-by-step series of examples that tell you how to get a development environment running.
+Steps to install locally: 
 
 1. Clone the repository:
 
@@ -31,21 +32,22 @@ A step-by-step series of examples that tell you how to get a development environ
 
 ## Launching the FTP Server
 
-To launch the FTP server using Docker Compose:
+To launch an instance of a locally running ftp server:
 
 1. Ensure Docker is running on your machine.
 
 2. From the root of your project directory, run:
 
     ```bash 
-    npm run start-ftp-and-upload
+    docker-compose up
     ```
-This script will ensure the FTP server is running and then execute the `index.js` file to upload files to the server.
 
-## Stopping the FTP Server
+## Running An Example: 
 
-To stop and remove the FTP server container:
+To generate an OBJS JSON file in addition to its hash locally, and then upload to an FTP server:
 
-```bash
-docker-compose down
+```bash 
+npm run upload
 ```
+
+Ensure environment variables needed to connect to FTP server are defined in your env file. 

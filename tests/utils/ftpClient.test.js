@@ -4,14 +4,13 @@ const FTP = require('ftp');
 jest.mock('FTP');
 
 describe('FtpClient Connection', () => {
-
   it('should connect successfully', async () => {
-    FTP.prototype.connect = jest.fn(); // Mock the connect method
+    FTP.prototype.connect = jest.fn();
 
     const client = new FTPClient();
     client.connect();
 
-    expect(FTP.prototype.connect).toHaveBeenCalled(); // Verify connect was called
+    expect(FTP.prototype.connect).toHaveBeenCalled();
   });
 
   it('should disconnect successfully', async () => {
