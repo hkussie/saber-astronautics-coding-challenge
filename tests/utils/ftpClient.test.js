@@ -1,29 +1,15 @@
 const FTPClient = require('../../src/utils/ftpClient');
-const ftp = require('ftp'); // Assuming 'ftp' is the library you're using
+const FTP = require('ftp');
 
-jest.mock('ftp', () => {
-    return jest.fn().mockImplementation(() => ({
-      connect: jest.fn().mockResolvedValue(true),
-      put: jest.fn().mockResolvedValue(true),
-      end: jest.fn(), // Mock the disconnection method
-    }));
-});
+jest.mock('FTP');
 
-describe('FTPClient disconnect functionality', () => {
-    let FTPClient;
-    let client;
-  
-    beforeEach(() => {
-      jest.clearAllMocks();
-      FTPClient = require('../../src/utils/ftpClient');
-      client = new FTPClient();
-    });
+describe('FtpClient Connection', () => {
+  it('should disconnect successfully', async () => {
+    FTP.prototype.end = jest.fn();
 
-    it('should correctly instantiate the mock FTP client', () => {
-        const client = new FTPClient();
-        
-        expect(client.connect).toBeDefined();
-        expect(client.upload).toBeDefined(); 
-        expect(client.disconnect).toBeDefined(); 
-    });
+    const client = new FTPClient();
+    client.disconnect();
+
+    expect(FTP.prototype.end).toHaveBeenCalled();
+  });
 });
