@@ -20,7 +20,6 @@ class FtpClient {
     return new Promise((resolve, reject) => {
       this.ftp.on('ready', resolve);
       this.ftp.on('error', reject);
-
       this.ftp.connect({
         host: ftpHost,
         user: ftpUser,
