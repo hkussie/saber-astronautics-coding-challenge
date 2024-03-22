@@ -1,8 +1,5 @@
 # Environment variables
 .env
 
-# Test data
-src/data/sampleData.js
-
 # DS_STORE
 .DS_STORE
