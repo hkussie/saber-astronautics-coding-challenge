@@ -1,24 +1,55 @@
-const FTPClient = require('../../src/utils/ftpClient');
-const FTP = require('ftp');
+const FtpClient = require('../../src/utils/ftpClient');
+jest.mock('basic-ftp', () => {
+    return {
+        Client: jest.fn().mockImplementation(() => {
+            return {
+                access: jest.fn(),
+                uploadFrom: jest.fn(),
+                close: jest.fn(),
+                ftp: { verbose: false }
+            };
+        })
+    };
+});
 
-jest.mock('FTP');
+describe('FtpClient', () => {
+    let ftpClient;
+    beforeEach(() => {
+        ftpClient = new FtpClient();
+    });
 
-describe('FtpClient Connection', () => {
-  it('should connect successfully', async () => {
-    FTP.prototype.connect = jest.fn();
+    describe('connect', () => {
+        it('should connect successfully', async () => {
+            await ftpClient.connect();
+            expect(ftpClient.client.access).toHaveBeenCalled();
+        });
 
-    const client = new FTPClient();
-    client.connect();
+        it('should throw an error if connection fails', async () => {
+            ftpClient.client.access.mockRejectedValue(new Error('Connection failed'));
+            await expect(ftpClient.connect()).rejects.toThrow('Connection failed');
+        });
+    });
 
-    expect(FTP.prototype.connect).toHaveBeenCalled();
-  });
+    describe('upload', () => {
+        it('should upload file successfully', async () => {
+            const filePath = 'local/path/file.txt';
+            const remotePath = 'remote/path/file.txt';
+            await ftpClient.upload(filePath, remotePath);
+            expect(ftpClient.client.uploadFrom).toHaveBeenCalledWith(filePath, remotePath);
+        });
 
-  it('should disconnect successfully', async () => {
-    FTP.prototype.end = jest.fn();
+        it('should throw an error if upload fails', async () => {
+            ftpClient.client.uploadFrom.mockRejectedValue(new Error('Upload failed'));
+            const filePath = 'local/path/file.txt';
+            const remotePath = 'remote/path/file.txt';
+            await expect(ftpClient.upload(filePath, remotePath)).rejects.toThrow('Upload failed');
+        });
+    });
 
-    const client = new FTPClient();
-    client.disconnect();
-
-    expect(FTP.prototype.end).toHaveBeenCalled();
-  });
+    describe('disconnect', () => {
+        it('should disconnect successfully', async () => {
+            await ftpClient.disconnect();
+            expect(ftpClient.client.close).toHaveBeenCalled();
+        });
+    });
 });
