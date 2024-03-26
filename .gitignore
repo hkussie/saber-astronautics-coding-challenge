@@ -3,3 +3,7 @@
 
 # DS_STORE
 .DS_STORE
+
+# Generated test files
+*-obs.json
+*-obs.sha256
