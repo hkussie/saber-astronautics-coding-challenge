@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "upload": "node src/index.js",
-    "start-ftp": "docker-compose up -d",
-    "stop-ftp": "docker-compose down"
+    "upload": "node src/index.js"
   },
   "keywords": [],
   "author": "",
