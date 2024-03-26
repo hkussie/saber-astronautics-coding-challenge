@@ -1,6 +1,6 @@
 # FTP Server Upload Coding Task
 
-This project leverages Docker, NodeJS and JavaScript to upload json files and their corresponding hashed files to an FTP server locally.
+This project leverages NodeJS, JavaScript and FTP protocol to upload json files and their corresponding hashed files to a remote FTP server.
 
 ## Getting Started
 
@@ -11,8 +11,7 @@ These instructions will get you a copy of the project up and running on your loc
 You'll need the following installed:
 
 - [Node.js](https://nodejs.org/) - The runtime server environment
-- [Docker](https://www.docker.com/) - Container platform used to run the FTP server
-
+- [FTP GUI Client](https://filezilla-project.org/download.php?type=client) - GUI to verify that files are being successfully uploaded to FTP server. 
 
 ### Installing
 
@@ -30,24 +29,21 @@ Steps to install locally:
     npm install
     ```
 
-## Launching the FTP Server
+## Testing Against a Live FTP Server
 
-To launch an instance of a locally running ftp server:
+1. Create a temporary ftp server [here](https://sftpcloud.io/tools/free-ftp-server)
 
-1. Ensure Docker is running on your machine.
-
-2. From the root of your project directory, run:
+2. Copy the following variables and paste the into your env file:
 
     ```bash 
-    docker-compose up
+    Host
+    Username
+    Password
     ```
-
-## Running An Example: 
-
-To generate an OBJS JSON file in addition to its hash locally, and then upload to an FTP server:
-
-```bash 
-npm run upload
-```
-
-Ensure environment variables needed to connect to FTP server are defined in your env file. 
+3. Ensure that ``FTP_SECURE=false`` in your ``env`` file. 
+4. Install FTP GUI Client to verify that files are being uploaded to server. Example of free client [here](https://filezilla-project.org/download.php?type=client)
+5. Run the following script: 
+    ```bash
+    npm run upload
+    ```
+6. Refresh GUI Client to validate that files are successfully uploaded.
