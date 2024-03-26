@@ -7,3 +7,7 @@
 # Generated test files
 *-obs.json
 *-obs.sha256
+
+# Temporary testing files
+sample.txt
+upload.js

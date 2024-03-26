@@ -7,32 +7,38 @@ const FtpClient = require('../utils/ftpClient');
  * Prepares and uploads data and its hash to the FTP server.
  * @async
  * @param {Object} inputData - The data to be processed and uploaded.
- * @returns {Promise<void>}
+ * @returns {Promise<void>} A promise that resolves when the upload and hash process is complete.
+ * @throws Will throw an error if the process fails at any point.
  */
 async function uploadDataAndHash(inputData) {
-  // Convert the input data to JSON and generate filenames
-  const jsonData = JSON.stringify(inputData);
-  const jsonFileName = generateFileName();
-  const hashFileName = generateHashFileName(jsonFileName);
-  
-  // Hash the JSON data
-  const dataHash = hashData(jsonData);
-
-  // Write the JSON data and its hash to local files
-  fs.writeFileSync(jsonFileName, jsonData);
-  fs.writeFileSync(hashFileName, dataHash);
-
-  // Initialize the FTP client and upload the files
   const ftpClient = new FtpClient();
+  const jsonData = JSON.stringify(inputData);
+  const jsonFileName = generateFileName(); 
+  const hashFileName = generateHashFileName(jsonFileName);
+
   try {
-    await ftpClient.connect();
-    await ftpClient.upload(jsonFileName, jsonFileName); // Upload the JSON file
-    await ftpClient.upload(hashFileName, hashFileName); // Upload the hash file
-    console.log('Both files uploaded successfully.');
+      // Connect to the FTP server
+      await ftpClient.connect();
+
+      // Write JSON data to a file
+      fs.writeFileSync(jsonFileName, jsonData);
+
+      // Generate hash of JSON data using the hashData utility
+      const hash = hashData(jsonData);
+      fs.writeFileSync(hashFileName, hash);
+
+      // Upload the JSON file
+      await ftpClient.upload(jsonFileName, jsonFileName);
+      console.log(`JSON file uploaded successfully: ${jsonFileName}`);
+
+      // Upload the hash file
+      await ftpClient.upload(hashFileName, hashFileName);
+      console.log(`Hash file uploaded successfully: ${hashFileName}`);
   } catch (error) {
-    console.error('Failed to upload files:', error);
+      console.error("An error occurred during the upload and hash process:", error);
   } finally {
-    ftpClient.disconnect();
+      // Disconnect from the FTP server
+      await ftpClient.disconnect();
   }
 }
 

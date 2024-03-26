@@ -1,67 +1,61 @@
-const FTP = require('ftp');
-const { ftpHost, ftpUser, ftpPassword } = require('../config');
+const ftp = require("basic-ftp");
+const config = require('../config/index');
 
 /**
  * Class representing an FTP client.
  */
+
 class FtpClient {
-  /**
-   * Creates an instance of the FTP client.
-   */
-  constructor() {
-    this.ftp = new FTP();
-  }
+    constructor() {
+        this.client = new ftp.Client();
+        this.client.ftp.verbose = true; // Enable for detailed logging
+    }
 
-  /**
-   * Connects to the FTP server using the configuration from the environment variables.
-   * @returns {Promise<void>} A promise that resolves when the connection is successfully established.
-   */
-  connect() {
-    return new Promise((resolve, reject) => {
-      this.ftp.on('ready', resolve);
-      this.ftp.on('error', reject);
-      this.ftp.connect({
-        host: ftpHost,
-        user: ftpUser,
-        password: ftpPassword,
-      });
-    });
-  }
+    /**
+     * Connects to an FTP server using environment variables for configuration.
+     * @async
+     * @throws Will throw an error if the connection fails.
+     */
+    async connect() {
+        try {
+            await this.client.access({
+                host: config.ftpHost,
+                user: config.ftpUser,
+                password: config.ftpPassword,
+                secure: config.ftpSecurity, // Convert string to boolean
+            });
+            console.log("Connected to FTP server.");
+        } catch (error) {
+            console.error("Failed to connect to FTP server:", error);
+            throw error; // Rethrow to handle in calling code
+        }
+    }
 
-  /**
-   * Uploads a file to the FTP server.
-   * @param {string} filePath - The local path of the file to upload.
-   * @param {string} destination - The destination path on the FTP server.
-   * @returns {Promise<void>} A promise that resolves when the file is successfully uploaded.
-   */
-  upload(filePath, destination) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        await this.connect();
-        this.ftp.put(filePath, destination, (err) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          console.log(`${filePath} uploaded successfully to ${destination}`);
-          this.disconnect(); // Ensure disconnection after successful upload
-          resolve();
-        });
-      } catch (error) {
-        console.error(`Failed to upload ${filePath}:`, error);
-        this.disconnect(); // Attempt to disconnect on error
-        reject(error);
-      }
-    });
-  }
+    /**
+     * Uploads a file to the FTP server.
+     * @async
+     * @param {string} filePath - The local path of the file to upload.
+     * @param {string} remotePath - The remote path where the file will be uploaded.
+     * @throws Will throw an error if the file upload fails.
+     */
+    async upload(filePath, remotePath) {
+        try {
+            await this.client.uploadFrom(filePath, remotePath);
+            console.log(`File uploaded successfully: ${filePath} to ${remotePath}`);
+        } catch (error) {
+            console.error(`Failed to upload file: ${filePath}`, error);
+            throw error; // Rethrow to allow for custom error handling
+        }
+    }
 
-  /**
-   * Closes the connection to the FTP server.
-   */
-  disconnect() {
-    this.ftp.end();
-    console.log('FTP connection closed');
-  }
+    /**
+     * Disconnects from the FTP server.
+     * @async
+     */
+    async disconnect() {
+        this.client.close();
+        console.log("Disconnected from FTP server.");
+    }
 }
 
 module.exports = FtpClient;
